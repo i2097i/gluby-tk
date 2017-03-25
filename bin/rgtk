@@ -1,0 +1,33 @@
+#! /usr/bin/env ruby
+
+require 'optparse'
+require "rgtk"
+
+# options = {}
+
+# OptionParser.new do |parser|
+#   parser.on("--new APP_NAME") do |name|
+#     puts "HERE"
+#     options[:app_name] = name
+#   end
+# end.parse!
+
+# if options.keys.include?(:app_name)
+#   puts "time to create #{options[:app_name]}"
+# else
+#   Rgtk.hi
+# end
+
+puts "No commands specified - exiting now..." and exit(0) if ARGV.empty?
+
+if ARGV[0] == "new"
+  if ARGV[1].nil? || ARGV[1].strip.empty?
+    puts "No app name specified - exiting now..."
+    exit(1)
+  else
+    puts "Creating #{ARGV[1]}..."
+    Rgtk.create(ARGV[1])
+  end
+end
+
+exit(0)

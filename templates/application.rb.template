@@ -1,0 +1,11 @@
+class Application < Gtk::Application
+  def initialize
+    super("com.pi.machine", :handles_open)
+    # TODO: Go to login screen if user is not ready logged in
+    signal_connect "activate" do |application|
+      @home = ApplicationWindow.new(:application => application)
+      @login = LoginWindow.new(:application => application)
+      @login.present
+    end
+  end
+end
