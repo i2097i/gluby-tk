@@ -6,8 +6,8 @@ require 'rgtk/version'
 Gem::Specification.new do |spec|
   spec.name          = "rgtk"
   spec.version       = Rgtk::VERSION
-  spec.authors       = ["Scot Reichman"]
-  spec.email         = ["scotreichman@gmail.com"]
+  spec.authors       = ["i2097i"]
+  spec.email         = ["i2097i@hotmail.com"]
   spec.summary       = "Ruby+GTK+Glade"
   spec.description   = "A tool for creating GTK applications using Ruby and Glade"
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.bindir        = "bin"
   spec.executables   = ["rgtk"]
   spec.require_paths = ["lib"]
-  spec.files         = Dir['lib/**/*.rb']
+  spec.files         = Dir['lib/**/*.rb'] + Dir['templates/**/*']
 
   spec.add_development_dependency "bundler", "~> 1.14"
   spec.add_development_dependency "rake", "~> 10.0"

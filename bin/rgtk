@@ -26,7 +26,7 @@ if ARGV[0] == "new"
     exit(1)
   else
     puts "Creating #{ARGV[1]}..."
-    Rgtk.create(ARGV[1])
+    Rgtk::Generator.create(ARGV[1])
   end
 end
 

@@ -1,0 +1,10 @@
+# Search paths
+$: << 'src/model/'
+$: << 'src/view/'
+$: << 'src/controller/'
+$: << 'src/helpers/'
+
+# Dependencies
+require 'gtk3'
+require 'application_window'
+require 'application'
