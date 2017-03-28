@@ -1,13 +1,13 @@
-# Rgtk
+# GlubyTK
 
-Rgtk (Ruby+GTK) is a tool for creating GTK applications in ruby with glade. Rgtk binds the UI elements in the glade files to the ruby classes. 
+GlubyTK (Glade+Ruby+GTK) is a tool for creating GTK applications in ruby with Glade.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'rgtk'
+gem 'gluby-tk'
 ```
 
 And then execute:
@@ -16,15 +16,15 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install rgtk
+    $ gem install gluby-tk
 
 ## Usage
 
-```rgtk new my_app_name && cd my_app_name && ruby my_app_name.rb```
+```gluby-tk new my_app_name && cd my_app_name && ruby my_app_name.rb```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/i2097i/rgtk.
+Bug reports and pull requests are welcome on GitHub at https://github.com/i2097i/gluby-tk.
 
 
 ## License

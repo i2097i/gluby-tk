@@ -1,4 +1,4 @@
-module Rgtk
+module GlubyTK
   class Generator
     def self.create app_name
       puts "#{app_name} already exists!" and exit(1) if File.exist?(app_name)

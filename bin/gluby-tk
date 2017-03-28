@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby
 
 require 'optparse'
-require "rgtk"
+require "gluby-tk"
 
 # options = {}
 
@@ -15,7 +15,7 @@ require "rgtk"
 # if options.keys.include?(:app_name)
 #   puts "time to create #{options[:app_name]}"
 # else
-#   Rgtk.hi
+#   GlubyTK.hi
 # end
 
 puts "No commands specified - exiting now..." and exit(0) if ARGV.empty?
@@ -26,7 +26,7 @@ if ARGV[0] == "new"
     exit(1)
   else
     puts "Creating #{ARGV[1]}..."
-    Rgtk::Generator.create(ARGV[1])
+    GlubyTK::Generator.create(ARGV[1])
   end
 end
 
