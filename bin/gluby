@@ -2,6 +2,7 @@
 
 require 'optparse'
 require "gluby-tk"
+require "wannabe_bool"
 
 # options = {}
 
@@ -28,6 +29,8 @@ if ARGV[0] == "new"
     puts "Creating #{ARGV[1]}..."
     GlubyTK::Generator.create(ARGV[1])
   end
+elsif ARGV[0] == "rebuild"
+  GlubyTK::Generator.rebuild(nil, !ARGV[1].nil? ? ARGV[1].to_b : false)
 end
 
 exit(0)

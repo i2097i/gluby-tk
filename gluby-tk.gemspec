@@ -17,11 +17,13 @@ Gem::Specification.new do |spec|
     f.match(%r{^(test|spec|features)/})
   end
   spec.bindir        = "bin"
-  spec.executables   = ["gluby-tk"]
+  spec.executables   = ["gluby"]
   spec.require_paths = ["lib"]
   spec.files         = Dir['lib/**/*.rb'] + Dir['templates/**/*']
 
   spec.add_development_dependency "bundler", "~> 1.14"
   spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_runtime_dependency 'gtk3', '~> 3.1.1'
+  spec.add_runtime_dependency "gtk3", "~> 3.1.1"
+  spec.add_runtime_dependency "nokogiri", "~> 1.7.1"
+  spec.add_runtime_dependency "wannabe_bool", "~> 0.6.0"
 end

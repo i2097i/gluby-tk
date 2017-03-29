@@ -1,0 +1,9 @@
+class Application < Gtk::Application
+  def initialize
+    super('app.gluby-tk_app_id', :handles_open)
+    signal_connect 'activate' do |application|
+      @window = ApplicationWindow.new(:application => application)
+      @window.present
+    end
+  end
+end

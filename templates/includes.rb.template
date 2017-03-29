@@ -5,6 +5,7 @@ $: << 'src/controller/'
 $: << 'src/helpers/'
 
 # Dependencies
+require 'fileutils'
 require 'gtk3'
 require 'application_window'
 require 'application'
