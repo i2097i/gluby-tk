@@ -1,4 +1,13 @@
 language: ruby
+dist: trusty
+sudo: required
 rvm:
-  - 2.4.0
+  - 2.4
 script: bundle exec rspec spec
+deploy:
+  provider: rubygems
+  api_key:
+    secure: OiLDjAvqt/MumXtEDlXzTI+er+pCWzf1b/ZK14+SVlK9t0mfE6t4RxqrfPhYNV98drYZGQKMJrBjqDW2kVZhuwYspC3tpDeszIGMWio/CYrBnA1dPS2wp2VeIESFM/NENWll0yfax6yx5GbA6QJ8KsF33Fdh7q+BPMroX6paZyjx4taHt6ihtM7wttBAovYp/6P8t/GQk78OB+PYbW1ngzZJ8hEMwvUEa4KNdqmS7q2njdN3+za3MQCgCsUa547ei57i4l7dCPRMn8BLAn9aTLMp83g8CXLAutGT8Xj+avLCTHHvfcKxyaFmL1R84LJAx5bOpf3Gi7bq5shjluz9Un3Zb0H38SLO1Yv6d6t/JDjp6HbZrDZ0ftSpuxG2Nhxi+aDI0/SAuBKbKSIMRCvClBUxONIfmE9/6iNcqMJTULGoE29uXREwmlmMvN1teWWAxpCZhQ/PqCLGgBRfiPPCCO9UvLJJUeA1lagsPXz2AaLE92RrbnGZrDb8kn1NJiMjleqLpcD+2eebRUfbuwE+sayRh9rCkjrUNEwwcy6M1j3r0//HKoLAOFmZltANH9i3/Zdk8r8DL/3ZBi7X7DbgyZ3ig+MHuBR9oBWnLfguwRRtVWoa2PJBQfHJV6EjO3dRMxhAl9jXVh84KQORWYTvzxRfYFebyvcmumHSzvwc//8=
+  gem: gluby-tk
+  on:
+    branch: master
