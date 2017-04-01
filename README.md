@@ -1,10 +1,6 @@
 # GlubyTK
 
-[![Gem Version](https://badge.fury.io/rb/gluby-tk.svg)](https://badge.fury.io/rb/gluby-tk)
-
-[![master](https://travis-ci.org/i2097i/gluby-tk.svg?branch=master)](https://travis-ci.org/i2097i/gluby-tk)
-
-[![develop](https://travis-ci.org/i2097i/gluby-tk.svg?branch=develop)](https://travis-ci.org/i2097i/gluby-tk)
+[![Gem Version](https://badge.fury.io/rb/gluby-tk.svg)](https://badge.fury.io/rb/gluby-tk)  [![master](https://travis-ci.org/i2097i/gluby-tk.svg?branch=master)](https://travis-ci.org/i2097i/gluby-tk)  [![develop](https://travis-ci.org/i2097i/gluby-tk.svg?branch=develop)](https://travis-ci.org/i2097i/gluby-tk)
 
 GlubyTK (Glade+Ruby+GTK) is a tool for creating GTK applications in ruby with Glade.
 
