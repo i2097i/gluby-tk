@@ -1,5 +1,5 @@
 class String
-  DISALLOWED_CHARACTERS = "[\-\s\.\,\?\'\"\:\;\\\/]"
+  DISALLOWED_CHARACTERS = /[\-\_\s.,?\'\":\/;\\]/
 
   def humanize
     gsub(DISALLOWED_CHARACTERS, " ").split(" ").map(&:capitalize).join("")
@@ -7,12 +7,28 @@ class String
 
   def underscore
     u = ""
-    sanitize.split("").each_with_index do |c, i|; if i > 0 && c == c.upcase; u += " "; end; u += c.downcase; end;
-    u.gsub(" ", "_")
+    chars = sanitize.split("")
+    unless chars.count == 0
+      while chars.first.match(DISALLOWED_CHARACTERS)
+        chars.delete_at(0)
+      end
+
+      while chars.last.match(DISALLOWED_CHARACTERS)
+        chars.delete_at(chars.count - 1)
+      end
+    end
+
+    chars.each_with_index do |c, i|
+      if c.match(/[A-Za-z]/) && i > 0 && c == c.upcase
+        u += " "
+      end
+      u += c.downcase
+    end
+    u.gsub(/\s/, "_")
   end
 
   def sanitize
-    gsub(DISALLOWED_CHARACTERS, "_")
+    gsub(/_{2,}/, "_").gsub(DISALLOWED_CHARACTERS, "_")
   end
 
 end

@@ -3,6 +3,23 @@ require 'pp'
 
 module GlubyTK
   class Generator
+    DIRECTORIES = [
+      "assets",
+      "assets/images",
+      "interface",
+      "src",
+      "src/model",
+      "src/view",
+      "src/controller"
+    ]
+
+    TEMPLATES = [
+      {:name => "main.rb", :path => ""},
+      {:name => "includes.rb", :path => "src"},
+      {:name => "application.rb", :path => "src"},
+      {:name => "ApplicationWindow.glade", :path => "interface"}
+    ]
+
     def self.create app_name
       if File.exist?(app_name)
         puts "#{app_name} already exists!"
@@ -10,51 +27,31 @@ module GlubyTK
       end
 
       root = "#{Dir.pwd}/#{app_name}"
-      directories = [
-        "assets",
-        "assets/images",
-        "interface",
-        "src",
-        "src/model",
-        "src/view",
-        "src/controller"
-      ]
+
+      module_name = "#{app_name.underscore}"
+
+      app_id = module_name.humanize.downcase
 
       # Create root directory
       Dir.mkdir "#{Dir.pwd}/#{app_name}"
 
+      # Create gluby-tkrc file
+      File.open("#{root}/.gluby-tkrc", "w+") { |file|
+        file.write(module_name)
+      } 
+
       # Create sub-directories
-      directories.each do |dir|
+      DIRECTORIES.each do |dir|
         Dir.mkdir "#{root}/#{dir}"
       end
 
-      # Create includes file
-      File.open("#{root}/src/includes.rb", "w+") { |file| 
-        file.write(get_template_contents("includes.rb.template"))
-      }
+      # Generate files from templates      
+      TEMPLATES.each do |template|
+        File.open("#{root}/#{template[:path]}/#{template[:name]}", "w+") { |file|
+          file.write(get_template_contents("#{template[:name]}.template").gsub("gluby-tk_app_id", app_id))
+        }
+      end
       
-      # Create app entry point
-      module_name = "#{app_name.underscore}"
-      app_id = module_name.humanize.downcase
-
-      main_file = "#{root}/#{module_name}.rb"
-      File.open(main_file, "w+") { |file| 
-        file.write(get_template_contents("boot.rb.template"))
-      }
-      File.open("#{root}/.gluby-tkrc", "w+") { |file|
-        file.write(module_name)
-      }
-
-      # Create Application
-      File.open("#{root}/src/application.rb", "w+") { |file|
-        file.write(get_template_contents("application.rb.template").gsub("gluby-tk_app_id", app_id))
-      }
-
-      # Make initial application window
-      File.open("#{root}/interface/ApplicationWindow.glade", "w+") { |file|
-        file.write(get_template_contents("ApplicationWindow.glade.template"))
-      }
-
       rebuild(root, true)
     end
 
