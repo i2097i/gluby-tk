@@ -19,7 +19,7 @@ require "wannabe_bool"
 #   GlubyTK.hi
 # end
 
-puts "No commands specified - exiting now..." and exit(0) if ARGV.empty?
+puts "No command specified - exiting now..." and exit(0) if ARGV.empty?
 
 if ARGV[0] == "new"
   if ARGV[1].nil? || ARGV[1].strip.empty?

@@ -1,11 +1,15 @@
 # Search paths
-$: << 'src/model/'
-$: << 'src/view/'
-$: << 'src/controller/'
-$: << 'src/helpers/'
+$: << 'src/gluby/'
 
 # Dependencies
 require 'fileutils'
 require 'gtk3'
-require 'application_window'
+
+# Include all auto-generated gluby helpers - do not remove
+require 'gluby_includes'
+
+# User Defined - Require any custom files here
+# ...
+
+# Application
 require 'application'

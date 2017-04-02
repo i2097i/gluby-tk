@@ -8,9 +8,7 @@ module GlubyTK
       "assets/images",
       "interface",
       "src",
-      "src/model",
-      "src/view",
-      "src/controller"
+      "src/gluby"
     ]
 
     TEMPLATES = [
@@ -70,9 +68,7 @@ module GlubyTK
         gresource_file_contents += "<gresource prefix=\"/app/#{current_app_name(root)}\">"
         gresource_file_contents += "<file preprocess=\"xml-stripblanks\">#{File.basename(filename)}</file>"
         gresource_file_contents += "</gresource>"
-        if generate_ruby_classes
-          generate_ruby_class_for_document(File.basename(filename), File.read(filename), root)
-        end
+        generate_ruby_class_for_document(File.basename(filename), File.read(filename), root, generate_ruby_classes)
       }
       gresource_file_contents += "</gresources>\n"
 
@@ -81,7 +77,7 @@ module GlubyTK
       }
     end
 
-    def self.generate_ruby_class_for_document(file_name, file_contents, root)
+    def self.generate_ruby_class_for_document(file_name, file_contents, root, generate_ruby_classes)
       doc = Nokogiri::XML(file_contents)
       
       if doc.css("template").first.nil?
@@ -96,21 +92,47 @@ module GlubyTK
       
       parent = parent.gsub("Gtk","")
 
-      class_file_contents = [
-        "class #{class_name} < Gtk::#{parent}",
+      base_file_name = "#{file_name.gsub(File.extname(file_name), "").underscore}"
+
+      gluby_file_dir = "#{root}/src/gluby"
+      gluby_file_path = "#{gluby_file_dir}/gluby_#{base_file_name}.rb"
+      gluby_class_file_contents = [
+        "class #{class_name.underscore.humanize} < Gtk::#{parent}",
         "\ttype_register",
         "\tclass << self",
         "\t\tdef init",
         "\t\t\tset_template(:resource => '/app/#{current_app_name(root)}/#{file_name}')",
-        "\t\t\t#{doc.css("[id]").map{|e| e.attributes["id"].value }.to_s}.each{|child_id| bind_template_child(child_id)}",
+        "\t\t\t#{doc.css("[id]").map{|e| e.attributes["id"].value.to_sym }.select{|e| e != class_name.to_sym }}.each{|child_id| bind_template_child(child_id)}",
         "\t\tend",
         "\tend",
         "end"
       ].join("\n")
 
-      new_file_path = "#{root}/src/view/#{file_name.gsub(File.extname(file_name), "").underscore}.rb"
-      File.open(new_file_path, "w+") { |file|
-        file.write class_file_contents
+      File.open(gluby_file_path, "w+") { |file|
+        file.write gluby_class_file_contents
+      }
+
+      if generate_ruby_classes
+        file_path = "#{root}/src/#{base_file_name}.rb"
+        class_file_contents = [
+          "class #{class_name.underscore.humanize}",
+          "\tdef initialize(args = nil)",
+          "\t\tsuper(args)",
+          "\tend",
+          "end",
+        ].join("\n")
+
+        File.open(file_path, "w+") { |file|
+          file.write class_file_contents
+        }
+      end
+
+      File.open("#{gluby_file_dir}/gluby_includes.rb", "a+") { |file|
+        contents = file.read
+        g_req = "require 'gluby_#{base_file_name}'"
+        req = "require '#{base_file_name}'"
+        file.write("#{g_req}\n") if contents.match(g_req).nil?
+        file.write("#{req}\n") if contents.match(req).nil?
       }
     end
 
