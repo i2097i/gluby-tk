@@ -1,4 +1,0 @@
-source 'https://rubygems.org'
-
-# Listen for interface file changes
-gem 'listen'

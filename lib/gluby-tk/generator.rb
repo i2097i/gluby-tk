@@ -13,7 +13,6 @@ module GlubyTK
 
     TEMPLATES = [
       {:name => "main.rb", :path => nil},
-      {:name => "Gemfile", :path => nil},
       {:name => "includes.rb", :path => "src"},
       {:name => "application.rb", :path => "src"},
       {:name => "ApplicationWindow.glade", :path => "interface"}
