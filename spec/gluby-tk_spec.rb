@@ -34,7 +34,10 @@ describe GlubyTK do
   end
 
   # it 'should run the program properly' do
-  #   expect(system("cd #{TEST_PROJECT_DIR} && ruby #{TEST_PROJECT_DIR}/main.rb &")).to be == true
+  #   success = system("cd #{TEST_PROJECT_DIR} && ruby #{Dir.pwd}/#{TEST_PROJECT_DIR}/main.rb &")
+  #   sleep(10)
+  #   system "pkill ruby"
+  #   expect(success).to be == true
   # end
 
 end

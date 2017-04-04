@@ -1,5 +1,6 @@
 require 'nokogiri'
 require 'pp'
+require 'logger'
 
 module GlubyTK
   class Generator
@@ -12,7 +13,7 @@ module GlubyTK
     ]
 
     TEMPLATES = [
-      {:name => "main.rb", :path => ""},
+      {:name => "main.rb", :path => nil},
       {:name => "includes.rb", :path => "src"},
       {:name => "application.rb", :path => "src"},
       {:name => "ApplicationWindow.glade", :path => "interface"}
@@ -20,7 +21,7 @@ module GlubyTK
 
     def self.create app_name
       if File.exist?(app_name)
-        puts "#{app_name} already exists!"
+        GlubyTK.gputs "#{app_name} already exists!"
         exit(1)
       end
 
@@ -28,9 +29,8 @@ module GlubyTK
 
       module_name = "#{app_name.underscore}"
 
-      app_id = module_name.humanize.downcase
-
       # Create root directory
+      GlubyTK.gputs "Creating new project directory..."
       Dir.mkdir "#{Dir.pwd}/#{app_name}"
 
       # Create gluby-tkrc file
@@ -40,36 +40,40 @@ module GlubyTK
 
       # Create sub-directories
       DIRECTORIES.each do |dir|
+        GlubyTK.gputs "Creating directory: #{dir}..."
         Dir.mkdir "#{root}/#{dir}"
       end
 
       # Generate files from templates      
       TEMPLATES.each do |template|
-        File.open("#{root}/#{template[:path]}/#{template[:name]}", "w+") { |file|
-          file.write(get_template_contents("#{template[:name]}.template").gsub("gluby-tk_app_id", app_id))
+        template_dest_file = "#{root}/#{template[:path].nil? ? "" : template[:path] + "/"}#{template[:name]}"
+        GlubyTK.gputs "Creating #{template_dest_file}"
+        File.open(template_dest_file, "w+") { |file|
+          file.write(get_template_contents("#{template[:name]}.template").gsub("gluby-tk_app_id", module_name))
         }
       end
       
-      rebuild(root, true)
+      rebuild(root)
+      GlubyTK.gputs "Finished creating #{module_name}"
+      GlubyTK.gputs "Done!"
     end
 
-    def self.rebuild(root = nil, generate_ruby_classes = false)
-      unless is_glubytk_directory?(root)
-        puts "No GlubyTK project detected. Please make sure you are in the right directory"
-        exit(1)
-      end
-
+    def self.rebuild(root = nil)
+      GlubyTK.gputs "Constructing gresource file..."
       root = root || Dir.pwd
 
       interface_files = Dir["#{root}/interface/*.glade"]
+      
       gresource_file_contents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
       gresource_file_contents += "<gresources>\n"
+      
       interface_files.each { |filename|
         gresource_file_contents += "<gresource prefix=\"/app/#{current_app_name(root)}\">"
         gresource_file_contents += "<file preprocess=\"xml-stripblanks\">#{File.basename(filename)}</file>"
         gresource_file_contents += "</gresource>"
-        generate_ruby_class_for_document(File.basename(filename), File.read(filename), root, generate_ruby_classes)
+        generate_ruby_class_for_document(File.basename(filename), File.read(filename), root)
       }
+      
       gresource_file_contents += "</gresources>\n"
 
       File.open("#{root}/interface/interface.gresource.xml", "w+") { |file|
@@ -77,7 +81,7 @@ module GlubyTK
       }
     end
 
-    def self.generate_ruby_class_for_document(file_name, file_contents, root, generate_ruby_classes)
+    def self.generate_ruby_class_for_document(file_name, file_contents, root)
       doc = Nokogiri::XML(file_contents)
       
       if doc.css("template").first.nil?
@@ -94,6 +98,8 @@ module GlubyTK
 
       base_file_name = "#{file_name.gsub(File.extname(file_name), "").underscore}"
 
+      GlubyTK.gputs "Constructing #{base_file_name} Ruby class..."
+
       gluby_file_dir = "#{root}/src/gluby"
       gluby_file_path = "#{gluby_file_dir}/gluby_#{base_file_name}.rb"
       gluby_class_file_contents = [
@@ -109,20 +115,23 @@ module GlubyTK
       ].join("\n")
 
       File.open(gluby_file_path, "w+") { |file|
+        GlubyTK.gputs "Writing #{gluby_file_path}..."
         file.write gluby_class_file_contents
       }
 
-      if generate_ruby_classes
-        file_path = "#{root}/src/#{base_file_name}.rb"
+      file_path = "#{root}/src/#{base_file_name}.rb"
+      if !File.exist?(file_path)
+        GlubyTK.gputs "#{file_path} did not exist. Creating..."
         class_file_contents = [
           "class #{class_name.underscore.humanize}",
           "\tdef initialize(args = nil)",
           "\t\tsuper(args)",
           "\tend",
-          "end",
+          "end"
         ].join("\n")
 
         File.open(file_path, "w+") { |file|
+          GlubyTK.gputs "Writing #{file_path}..."
           file.write class_file_contents
         }
       end
@@ -131,14 +140,14 @@ module GlubyTK
         contents = file.read
         g_req = "require 'gluby_#{base_file_name}'"
         req = "require '#{base_file_name}'"
+
+        GlubyTK.gputs "Checking require entries for #{base_file_name}..."
         file.write("#{g_req}\n") if contents.match(g_req).nil?
         file.write("#{req}\n") if contents.match(req).nil?
       }
     end
 
     # Helpers
-
-    private
 
     def self.get_template_contents(template_name)
       File.read("#{template_dir}#{template_name}")
@@ -153,12 +162,15 @@ module GlubyTK
     end
 
     def self.is_glubytk_directory?(dir = nil)
-      File.exist?(glubytk_rc_path(dir))
+      is_g_project = File.exist?(glubytk_rc_path(dir))
+      
+      GlubyTK.gputs "No GlubyTK project detected. Please make sure you are in the right directory." if !is_g_project
+      
+      return is_g_project
     end
 
     def self.glubytk_rc_path(dir = nil)
       "#{dir || Dir.pwd}/.gluby-tkrc"
     end
-
   end
 end
