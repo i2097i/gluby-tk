@@ -25,12 +25,12 @@ Using [Glade](https://glade.gnome.org/), create a new widget template and save i
 This command will parse your template and create the required ruby class & bindings.
 
 #### Listening for changes
-By default (>=0.1.4) GlubyTK includes the [guard/listen](https://github.com/guard/listen) gem in any new project's Gemfile. This service listens for any changes to the interface files. When a change is detected it essentially runs the ```gluby rebuild``` command.
+GlubyTK uses the [guard/listen](https://github.com/guard/listen) gem t0 listen for any changes to your interface files. When a change is detected it essentially runs the ```gluby rebuild``` command automatically.
 
     $ gluby listen
 
 
-> NOTE: If you want access to any elements in the template you will need to define a value for the ```Composite -> Class``` or ```Non-composite -> ID``` field in Glade.
+> NOTE: If you want access to any Glade elements in Ruby code, you will need to define a value for the ```Composite -> Class``` or ```Non-composite -> ID``` field in Glade.
 
 ## Contributing
 
