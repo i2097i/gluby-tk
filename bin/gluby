@@ -19,18 +19,27 @@ require "wannabe_bool"
 #   GlubyTK.hi
 # end
 
-puts "No command specified - exiting now..." and exit(0) if ARGV.empty?
+GlubyTK.gputs "No command specified - exiting now..." and exit(0) if ARGV.empty?
 
 if ARGV[0] == "new"
   if ARGV[1].nil? || ARGV[1].strip.empty?
-    puts "No app name specified - exiting now..."
+    GlubyTK.gputs "No app name specified - exiting now..."
     exit(1)
   else
-    puts "Creating #{ARGV[1]}..."
+    GlubyTK.gputs "Creating #{ARGV[1]}..."
     GlubyTK::Generator.create(ARGV[1])
   end
 elsif ARGV[0] == "rebuild"
-  GlubyTK::Generator.rebuild(nil, !ARGV[1].nil? ? ARGV[1].to_b : false)
+  exit(1) unless GlubyTK::Generator.is_glubytk_directory?
+  GlubyTK.gputs "Rebuilding..."
+  GlubyTK::Generator.rebuild
+elsif ARGV[0] == "start"
+  exit(1) unless GlubyTK::Generator.is_glubytk_directory?
+  GlubyTK.gputs "Starting #{GlubyTK::Generator.current_app_name}..."
+  system "ruby main.rb &"
+elsif ARGV[0] == 'listen'
+  exit(1) unless GlubyTK::Generator.is_glubytk_directory?
+  GlubyTK::Listener.new
 end
 
 exit(0)

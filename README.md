@@ -12,17 +12,25 @@ Add this line to your application's Gemfile:
 
 ## Usage
 
+The GlubyTK command line tool command is simply ```gluby``` for simplicity.
+
 ### Create & run a new Gluby project
-    $ gluby new my_app_name && cd my_app_name && ruby main.rb
+    $ gluby new my_app_name && cd my_app_name && gluby start
 
 ### Add a new glade template
 Using [Glade](https://glade.gnome.org/), create a new widget template and save it to your project's 'interface' directory with the extension ```.glade```. Then from the root of your project run 
     
-    $ gluby rebuild true
+    $ gluby rebuild
 
 This command will parse your template and create the required ruby class & bindings.
 
-> NOTE: If you want access to any elements in the template you will need to define a value for the ID field in glade.
+#### Listening for changes
+By default (>=0.1.4) GlubyTK includes the [guard/listen](https://github.com/guard/listen) gem in any new project's Gemfile. This service listens for any changes to the interface files. When a change is detected it essentially runs the ```gluby rebuild``` command.
+
+    $ gluby listen
+
+
+> NOTE: If you want access to any elements in the template you will need to define a value for the ```Composite -> Class``` or ```Non-composite -> ID``` field in Glade.
 
 ## Contributing
 
