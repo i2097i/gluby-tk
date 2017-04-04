@@ -1,8 +1,7 @@
 require 'nokogiri'
-require 'pp'
-require 'logger'
 
 module GlubyTK
+
   class Generator
     DIRECTORIES = [
       "assets",
@@ -14,6 +13,7 @@ module GlubyTK
 
     TEMPLATES = [
       {:name => "main.rb", :path => nil},
+      {:name => "Gemfile", :path => nil},
       {:name => "includes.rb", :path => "src"},
       {:name => "application.rb", :path => "src"},
       {:name => "ApplicationWindow.glade", :path => "interface"}
@@ -119,6 +119,7 @@ module GlubyTK
         file.write gluby_class_file_contents
       }
 
+      # TODO: Need to ensure that the user-facing class (not the gluby_class_name) reflects any updates such as root class name change etc.
       file_path = "#{root}/src/#{base_file_name}.rb"
       if !File.exist?(file_path)
         GlubyTK.gputs "#{file_path} did not exist. Creating..."

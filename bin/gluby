@@ -37,6 +37,9 @@ elsif ARGV[0] == "start"
   exit(1) unless GlubyTK::Generator.is_glubytk_directory?
   GlubyTK.gputs "Starting #{GlubyTK::Generator.current_app_name}..."
   system "ruby main.rb &"
+elsif ARGV[0] == 'listen'
+  exit(1) unless GlubyTK::Generator.is_glubytk_directory?
+  GlubyTK::Listener.new
 end
 
 exit(0)
