@@ -1,14 +1,21 @@
+require 'stringio'
 require 'nokogiri'
 
 module GlubyTK
 
   class Generator
+    DIR_ASSETS = "assets"
+    DIR_ASSETS_IMAGES = "#{DIR_ASSETS}/images"
+    DIR_INTERFACE = "interface"
+    DIR_SRC = "src"
+    DIR_SRC_GLUBY = "#{DIR_SRC}/gluby"
+
     DIRECTORIES = [
-      "assets",
-      "assets/images",
-      "interface",
-      "src",
-      "src/gluby"
+      DIR_ASSETS,
+      DIR_ASSETS_IMAGES,
+      DIR_INTERFACE,
+      DIR_SRC,
+      DIR_SRC_GLUBY
     ]
 
     TEMPLATES = [
@@ -16,6 +23,15 @@ module GlubyTK
       {:name => "includes.rb", :path => "src"},
       {:name => "application.rb", :path => "src"},
       {:name => "ApplicationWindow.glade", :path => "interface"}
+    ]
+
+    SAMPLE_CODE_LINES = [
+      "# Start GlubyTK sample code",
+      "# Label Reference: https://ruby-gnome2.osdn.jp/hiki.cgi?pango-markup",
+      "welcome_label.margin = 100",
+      "welcome_label.use_markup = true",
+      "welcome_label.markup = '<span weight=\"heavy\" foreground=\"white\" size=\"x-large\"><b>Generated with GlubyTK</b></span>'",
+      "# End GlubyTK sample code"
     ]
 
     def self.create app_name
@@ -52,9 +68,31 @@ module GlubyTK
         }
       end
       
+      # Construct gresource file & ruby classes
       rebuild(root)
+
+      # Add in example code
+      add_sample_code_to_new_project root
+
       GlubyTK.gputs "Finished creating #{module_name}"
       GlubyTK.gputs "Done!"
+    end
+
+    def self.add_sample_code_to_new_project(root)
+      app_window_path = "#{root}/#{DIR_SRC}/application_window.rb"
+      contents = StringIO.open(File.read(app_window_path))
+      new_contents = ""
+      contents.each do |line|
+        new_contents << line
+        if line.include?("super(args)")
+          tab = "\t\t"
+          nl = "\n"
+          SAMPLE_CODE_LINES.each do |scl|
+            new_contents << "#{tab}#{scl}#{nl}"
+          end
+        end
+      end
+      File.open(app_window_path, "wb").write new_contents
     end
 
     def self.rebuild(root = nil)

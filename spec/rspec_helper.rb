@@ -1,4 +1,6 @@
+require 'nokogiri'
 require 'gluby-tk'
+
 RSpec.configure do |config|
 
    # Use color in STDOUT
