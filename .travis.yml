@@ -12,3 +12,5 @@ deploy:
   gem: gluby-tk
   on:
     branch: master
+# after_deploy: rake install && gluby tweet
+after_success: rake install && gluby tweet

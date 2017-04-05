@@ -28,4 +28,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "nokogiri", "~> 1.7.1"
   spec.add_runtime_dependency "wannabe_bool", "~> 0.6.0"
   spec.add_runtime_dependency "listen", "~> 3.1.5"
+  spec.add_runtime_dependency "twitter", "~> 6.1.0"
 end
