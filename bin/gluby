@@ -40,6 +40,8 @@ elsif ARGV[0] == "start"
 elsif ARGV[0] == 'listen'
   exit(1) unless GlubyTK::Generator.is_glubytk_directory?
   GlubyTK::Listener.new
+elsif ARGV[0] == 'tweet'
+  GlubyTK::Tweeter.tweet_release
 end
 
 exit(0)
