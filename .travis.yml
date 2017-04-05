@@ -12,3 +12,4 @@ deploy:
   gem: gluby-tk
   on:
     branch: master
+after_deploy: gluby tweet
