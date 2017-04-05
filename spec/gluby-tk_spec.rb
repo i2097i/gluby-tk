@@ -33,6 +33,7 @@ describe GlubyTK do
     }
   end
 
+  # This only works locally - travis doesn't like it
   # it 'should run the program properly' do
   #   success = system("cd #{TEST_PROJECT_DIR} && ruby #{Dir.pwd}/#{TEST_PROJECT_DIR}/main.rb &")
   #   sleep(10)
@@ -40,6 +41,17 @@ describe GlubyTK do
   #   expect(success).to be == true
   # end
 
-  # TODO: Need to create tests for rebuild, listen and start
+  it 'should build ruby classes for new interface files' do
+    system("cp templates/SpecBox.glade.template #{TEST_PROJECT_DIR}/interface/SpecBox.glade")
+    GlubyTK::Generator.rebuild("#{Dir.pwd}/#{TEST_PROJECT_DIR}")
+    expect(File.exist?("#{TEST_PROJECT_DIR}/src/spec_box.rb")).to be true
+    expect(File.exist?("#{TEST_PROJECT_DIR}/src/gluby/gluby_spec_box.rb")).to be true
+  end
 
+  it 'should update child entities when interface files are changed' do
+    # TODO: Modify the id of a child entity in an interface file and 
+    # verify that it is updated in the gluby_ ruby class
+  end
+
+  # TODO: Need to create tests for listen and start
 end
