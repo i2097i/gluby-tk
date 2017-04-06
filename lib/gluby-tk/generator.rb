@@ -72,27 +72,10 @@ module GlubyTK
       rebuild(root)
 
       # Add in example code
-      add_sample_code_to_new_project root
+      GlubyTK::FileOperator.add_lines_to_file("#{root}/#{DIR_SRC}/application_window.rb", SAMPLE_CODE_LINES.map{|scl| "\t\t#{scl}\n"}, "super(args")
 
       GlubyTK.gputs "Finished creating #{module_name}"
       GlubyTK.gputs "Done!"
-    end
-
-    def self.add_sample_code_to_new_project(root)
-      app_window_path = "#{root}/#{DIR_SRC}/application_window.rb"
-      contents = StringIO.open(File.read(app_window_path))
-      new_contents = ""
-      contents.each do |line|
-        new_contents << line
-        if line.include?("super(args)")
-          tab = "\t\t"
-          nl = "\n"
-          SAMPLE_CODE_LINES.each do |scl|
-            new_contents << "#{tab}#{scl}#{nl}"
-          end
-        end
-      end
-      File.open(app_window_path, "wb").write new_contents
     end
 
     def self.rebuild(root = nil)
@@ -100,6 +83,9 @@ module GlubyTK
       root = root || Dir.pwd
 
       interface_files = Dir["#{root}/interface/*.glade"]
+
+      gluby_class_matcher = "#{root}/src/gluby/gluby_*.rb"
+      system("rm #{gluby_class_matcher}") if Dir[gluby_class_matcher].any?
       
       gresource_file_contents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
       gresource_file_contents += "<gresources>\n"
@@ -174,7 +160,7 @@ module GlubyTK
         }
       end
 
-      File.open("#{gluby_file_dir}/gluby_includes.rb", "a+") { |file|
+      File.open("#{gluby_file_dir}/gluby_includes.rb", "w+") { |file|
         contents = file.read
         g_req = "require 'gluby_#{base_file_name}'"
         req = "require '#{base_file_name}'"

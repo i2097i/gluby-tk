@@ -3,6 +3,13 @@ require 'rspec_helper'
 describe GlubyTK do
   TEST_PROJECT_DIR = "test_project"
 
+  SPEC_BOX = {
+    :interface => "interface/SpecBox.glade",
+    :gluby => "src/gluby/gluby_spec_box.rb",
+    :ruby => "src/spec_box.rb",
+    :base => "spec_box"
+  }
+
   before :all do
     system "gluby new #{TEST_PROJECT_DIR}"
   end
@@ -42,15 +49,24 @@ describe GlubyTK do
   # end
 
   it 'should build ruby classes for new interface files' do
-    system("cp templates/SpecBox.glade.template #{TEST_PROJECT_DIR}/interface/SpecBox.glade")
+    system("cp templates/SpecBox.glade.template #{TEST_PROJECT_DIR}/#{SPEC_BOX[:interface]}")
     GlubyTK::Generator.rebuild("#{Dir.pwd}/#{TEST_PROJECT_DIR}")
-    expect(File.exist?("#{TEST_PROJECT_DIR}/src/spec_box.rb")).to be true
-    expect(File.exist?("#{TEST_PROJECT_DIR}/src/gluby/gluby_spec_box.rb")).to be true
+    expect(File.exist?("#{TEST_PROJECT_DIR}/#{SPEC_BOX[:ruby]}")).to be true
+    expect(File.exist?("#{TEST_PROJECT_DIR}/#{SPEC_BOX[:gluby]}")).to be true
   end
 
   it 'should update child entities when interface files are changed' do
     # TODO: Modify the id of a child entity in an interface file and 
     # verify that it is updated in the gluby_ ruby class
+  end
+
+  it 'should remove gluby_* class files and requires for deleted interface files' do
+    system("rm #{TEST_PROJECT_DIR}/#{SPEC_BOX[:interface]}")
+    GlubyTK::Generator.rebuild("#{Dir.pwd}/#{TEST_PROJECT_DIR}")
+    
+    gluby_includes_path = "#{TEST_PROJECT_DIR}/src/gluby/gluby_includes.rb"
+    expect(GlubyTK::FileOperator.file_contains_line?(gluby_includes_path, SPEC_BOX[:base])).to be false
+    expect(File.exist?("#{TEST_PROJECT_DIR}/#{SPEC_BOX[:gluby]}")).to be false
   end
 
   # TODO: Need to create tests for listen and start

@@ -15,7 +15,7 @@ module GlubyTK
           config.access_token        = ENV["ACCESS_TOKEN"]
           config.access_token_secret = ENV["ACCESS_SECRET"]
         end
-        client.update("Version #{GlubyTK::VERSION} has just been released! Check it out at https://rubygems.org/gems/gluby-tk")
+        client.update("#{GlubyTK::VERSION} changes: #{GlubyTK::RELEASE_NOTES}")
       end
     end
   end
