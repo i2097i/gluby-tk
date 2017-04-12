@@ -1,6 +1,13 @@
 # GlubyTK
 
-[![Gem Version](https://badge.fury.io/rb/gluby-tk.svg)](https://badge.fury.io/rb/gluby-tk)  [![master](https://travis-ci.org/i2097i/gluby-tk.svg?branch=master)](https://travis-ci.org/i2097i/gluby-tk)  [![develop](https://travis-ci.org/i2097i/gluby-tk.svg?branch=develop)](https://travis-ci.org/i2097i/gluby-tk)
+##### __Current Version:__
+[![Gem Version](https://badge.fury.io/rb/gluby-tk.svg)](https://badge.fury.io/rb/gluby-tk)
+
+##### CI Status:
+
+> __Master:__ [![master](https://travis-ci.org/i2097i/gluby-tk.svg?branch=master)](https://travis-ci.org/i2097i/gluby-tk)
+
+> __Develop:__ [![develop](https://travis-ci.org/i2097i/gluby-tk.svg?branch=develop)](https://travis-ci.org/i2097i/gluby-tk)
 
 GlubyTK (Glade+Ruby+GTK) is a tool for creating GTK applications in Ruby with Glade.
 
@@ -12,7 +19,7 @@ Add this line to your application's Gemfile:
 
 ## Usage
 
-The GlubyTK command line tool command is simply ```gluby``` for simplicity.
+The GlubyTK command line tool command is simply called ```gluby``` for simplicity.
 
 ### Create & run a new Gluby project
     $ gluby new my_app_name && cd my_app_name && gluby start
@@ -25,7 +32,7 @@ Using [Glade](https://glade.gnome.org/), create a new widget template and save i
 This command will parse your template and create the required ruby class & bindings.
 
 #### Listening for changes
-GlubyTK uses the [guard/listen](https://github.com/guard/listen) gem t0 listen for any changes to your interface files. When a change is detected it essentially runs the ```gluby rebuild``` command automatically.
+GlubyTK uses the [guard/listen](https://github.com/guard/listen) gem to listen for any changes to your interface files. When a change is detected it essentially runs the ```gluby rebuild``` command automatically.
 
     $ gluby listen
 
