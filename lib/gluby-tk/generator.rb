@@ -26,12 +26,10 @@ module GlubyTK
     ]
 
     SAMPLE_CODE_LINES = [
-      "# Start GlubyTK sample code",
       "# Label Reference: https://ruby-gnome2.osdn.jp/hiki.cgi?pango-markup",
       "welcome_label.margin = 100",
       "welcome_label.use_markup = true",
       "welcome_label.markup = '<span weight=\"heavy\" foreground=\"white\" size=\"x-large\"><b>Generated with GlubyTK</b></span>'",
-      "# End GlubyTK sample code"
     ]
 
     def self.create app_name
@@ -72,7 +70,7 @@ module GlubyTK
       rebuild(root)
 
       # Add in example code
-      GlubyTK::FileOperator.add_lines_to_file("#{root}/#{DIR_SRC}/application_window.rb", SAMPLE_CODE_LINES.map{|scl| "\t\t#{scl}\n"}, "super(args")
+      GlubyTK::FileOperator.add_lines_to_file("#{root}/#{DIR_SRC}/application_window.rb", SAMPLE_CODE_LINES.map{|scl| "\t\t#{scl}\n"}, "begin_sample_code")
 
       GlubyTK.gputs "Finished creating #{module_name}"
       GlubyTK.gputs "Done!"
@@ -144,12 +142,18 @@ module GlubyTK
 
       # TODO: Need to ensure that the user-facing class (not the gluby_class_name) reflects any updates such as root class name change etc.
       file_path = "#{root}/src/#{base_file_name}.rb"
+      app_name = current_app_name(root).humanize
       if !File.exist?(file_path)
         GlubyTK.gputs "#{file_path} did not exist. Creating..."
         class_file_contents = [
           "class #{class_name.underscore.humanize}",
+          "\tAPP_NAME = \"#{app_name}\"",
           "\tdef initialize(args = nil)",
           "\t\tsuper(args)",
+          "\t\tGLib.set_application_name(APP_NAME)",
+          "\t\tset_wmclass(APP_NAME, APP_NAME)",
+          "\t\t# begin_sample_code",
+          "\t\t# end_sample_code",
           "\tend",
           "end"
         ].join("\n")
@@ -160,7 +164,7 @@ module GlubyTK
         }
       end
 
-      File.open("#{gluby_file_dir}/gluby_includes.rb", "w+") { |file|
+      File.open("#{gluby_file_dir}/gluby_includes.rb", "a+") { |file|
         contents = file.read
         g_req = "require 'gluby_#{base_file_name}'"
         req = "require '#{base_file_name}'"

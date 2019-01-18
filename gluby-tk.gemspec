@@ -21,12 +21,12 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.files         = Dir['lib/**/*.rb'] + Dir['templates/**/*']
 
-  spec.add_development_dependency "bundler", "~> 1.14"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec", "~> 3.5.0" 
-  spec.add_runtime_dependency "gtk3", "~> 3.1.1"
-  spec.add_runtime_dependency "nokogiri", "~> 1.7.1"
-  spec.add_runtime_dependency "wannabe_bool", "~> 0.6.0"
-  spec.add_runtime_dependency "listen", "~> 3.1.5"
-  spec.add_runtime_dependency "twitter", "~> 6.1.0"
+  spec.add_development_dependency "bundler", "~> 2.0", ">= 2.0.1"
+  spec.add_development_dependency "rake", "~> 12.3", ">= 12.3.2"
+  spec.add_development_dependency "rspec", "~> 3.8", ">= 3.8.0"
+  spec.add_runtime_dependency "gtk3", "~> 3.1", ">= 3.1.1"
+  spec.add_runtime_dependency "nokogiri", "~> 1.10", ">= 1.10.1"
+  spec.add_runtime_dependency "wannabe_bool", "~> 0.7", ">= 0.7.1"
+  spec.add_runtime_dependency "listen", "~> 3.1", ">= 3.1.5"
+  spec.add_runtime_dependency "twitter", "~> 6.2", ">= 6.2.0"
 end
