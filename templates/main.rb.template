@@ -1,7 +1,11 @@
-$: << 'src'
+require 'yaml'
+
+$config = YAML.load_file("config.yml")
+
+$: << $config["directories"]["src"]
 require 'includes'
 
-data_path = "#{File.expand_path(File.dirname(__FILE__))}/interface"
+data_path = "#{File.expand_path(File.dirname(__FILE__))}/#{$config["directories"]["interface"]}"
 
 gresource_bin = "#{data_path}/interface.gresource"
 gresource_xml = "#{data_path}/interface.gresource.xml"

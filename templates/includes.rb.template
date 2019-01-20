@@ -1,5 +1,5 @@
 # Search paths
-$: << 'src/gluby/'
+$: << "#{$config["directories"]["src"]}/gluby/"
 
 # Dependencies
 require 'fileutils'

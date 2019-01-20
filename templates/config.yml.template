@@ -1,0 +1,4 @@
+directories:
+  assets: "assets"
+  interface: "interface"
+  src: "src"
